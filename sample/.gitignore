@@ -1,10 +1,11 @@
 *.class
 
-# Config Files #
+# Config Files and Folders #
 *.settings
 *.classpath
 *.project
 *~
+target
 
 # Package Files #
 *.jar
