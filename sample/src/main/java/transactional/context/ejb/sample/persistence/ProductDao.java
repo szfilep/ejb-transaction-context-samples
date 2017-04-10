@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 @Stateless
 public class ProductDao {
@@ -19,6 +20,8 @@ public class ProductDao {
 	@EJB
 	private ProductDao productDao;
 
+
+
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case1(Product p1, Product p2) {
 		em.persist(p1);
@@ -28,10 +31,19 @@ public class ProductDao {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case1_(Product p) {
 		em.persist(p);
+
 		throw new RuntimeException();
 	}
 
 	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case2(Product p1, Product p2) {
@@ -49,6 +61,15 @@ public class ProductDao {
 	}
 
 	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case3(Product p1, Product p2) {
@@ -60,6 +81,9 @@ public class ProductDao {
 	}
 
 	//
+	//
+	//
+	//
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case4(Product p1, Product p2) {
@@ -68,6 +92,9 @@ public class ProductDao {
 	}
 
 	//
+	//
+	//
+	//
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void case5(Product p1, Product p2) {
@@ -75,6 +102,10 @@ public class ProductDao {
 		productDao.throwExceptionInNewTransactionButCatch(p2);
 	}
 
+	//
+	//
+	//
+	//
 	//
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -90,28 +121,47 @@ public class ProductDao {
 	}
 
 	//
+	//
+	//
+	//
+	//
+	//
 
 	@TransactionAttribute(TransactionAttributeType.NEVER)
 	public void case7(Product p1, Product p2) {
-		productDao.persist(p1, p2);
+		productDao.persistWithRequiredAnnotation(p1, p2);
 	}
 
+	//
+	//
+	//
+	//
+	//
 	//
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void case8(Product p1, Product p2) {
-		productDao.persist(p1, p2);
+		productDao.persistWithRequiredAnnotation(p1, p2);
 	}
 
 	//
+	//
+	//
+	//
+	//
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@Transactional(rollbackOn = {Exception.class})
 	public void case9(Product p1, Product p2) throws Exception {
 		em.persist(p1);
 		em.persist(p2);
 		throw new Exception();
 	}
 
+	//
+	//
+	//
+	//
 	//
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -130,7 +180,7 @@ public class ProductDao {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void persist(Product p1, Product p2) {
+	public void persistWithRequiredAnnotation(Product p1, Product p2) {
 		em.persist(p1);
 		em.persist(p2);
 	}
